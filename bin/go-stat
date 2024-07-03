@@ -1,15 +1,15 @@
-#!/bin/bash -eu
+#!/bin/bash
 
-if [ $# -ne 2 ]; then
-  echo "Usage: $0 <tag> <path>"
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 <tag> <path...>"
   exit 1
 fi
 
-tag=$1
-path=$2
+tag="$1"
+paths="${@:2}"
 
 cd "$(dirname "$0")"
 cmd_path=$(pwd)
 cd - > /dev/null
 
-git rebase --exec "$cmd_path/exec-go-stat $path" "$tag" 2>/dev/null
+git rebase --exec "$cmd_path/exec-go-stat $paths" "$tag" 2>/dev/null

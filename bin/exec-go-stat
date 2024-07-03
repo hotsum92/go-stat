@@ -1,9 +1,13 @@
 #!/bin/bash
 
-path=$1
-
 echo
 git log --oneline --no-decorate HEAD^..HEAD
-gocyclo --top 10 "$path" | sed 's/^/cycle /' || true
-gocognit --top 10 "$path" | sed 's/^/cognit /' || true
-go test --cover "$path" | sed 's/^/test /' || true
+
+for path in "$@"; do
+  if [ -d "$path" ] || [ -f "$path" ]; then
+    gocyclo "$path" | sed 's/^/cycle /' || true
+    gocognit "$path" | sed 's/^/cognit /' || true
+    go test --cover "$path" | xargs | sed 's/^/test /' || true
+  fi
+done
+
