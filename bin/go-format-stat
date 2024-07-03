@@ -1,0 +1,6 @@
+#!/bin/bash
+
+awk '{print $2"."$3"."$1, $4, $5}' | \
+datamash crosstab 1,2 unique 3 -t ' ' --filler=0 --header-in | \
+sed '1s/^/id/' | \
+sed -E 's/....-..-..\...:..:..\.//'
