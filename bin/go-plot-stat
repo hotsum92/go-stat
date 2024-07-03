@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tmpfile=$(mktemp)
+
+cat -n - > $tmpfile
+
+gnuplot --persist -e "plot for [i=3:*] \"$tmpfile\" using 2:i title columnheader(i) with linespoints"
