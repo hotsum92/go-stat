@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+  echo "Usage: $0 <tag> <path...>"
+  exit 1
+fi
+
+tag="$1"
+path="$2"
+
+cd "$(dirname "$0")"
+cmd_path=$(pwd)
+cd - > /dev/null
+
+git rebase --exec "$cmd_path/exec-go-cognit $path" "$tag" 2>/dev/null | \
+$cmd_path/go-format-stat | \
+$cmd_path/go-plot-stat

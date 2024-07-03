@@ -2,6 +2,6 @@
 
 tmpfile=$(mktemp)
 
-cat -n - > $tmpfile
+cat - | awk '{print NR, $0}' > $tmpfile
 
-gnuplot --persist -e "plot for [i=3:*] \"$tmpfile\" using 2:i title columnheader(i) with linespoints"
+gnuplot --persist -e "plot for [i=3:*] \"$tmpfile\" using 1:i:xtic(2) title columnheader(i) with linespoints" 2>/dev/null
